@@ -12,7 +12,6 @@ repository = "https://github.com/Microwave-WYB/gsloc"
 [tool.poetry.dependencies]
 python = "^3.9"
 protobuf = "^5.26.1"
-pydantic = "^2.7.1"
 requests = "^2.31.0"
 rich = "^13.7.1"
 

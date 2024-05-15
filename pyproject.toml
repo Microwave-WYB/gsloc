@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "gsloc"
+version = "0.1.0"
+description = ""
+authors = ["Yibo Wei <david_wyb2001@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+protobuf = "^5.26.1"
+pydantic = "^2.7.1"
+requests = "^2.31.0"
+rich = "^13.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+gsloc = "gsloc.cli:main"

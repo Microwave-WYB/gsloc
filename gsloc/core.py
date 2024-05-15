@@ -2,10 +2,9 @@
 
 import logging
 import struct
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 import requests
-from pydantic import BaseModel, Field, ValidationError
 
 from gsloc.protobuf.location_pb2 import Request, Response  # pylint: disable=no-name-in-module
 
@@ -19,16 +18,26 @@ class NoResultsError(Exception):
         super().__init__(f"No results found for MAC address: {mac}")
 
 
-class WifiInfo(BaseModel):
+@dataclass
+class WifiInfo:
     """Information about a WiFi network."""
 
     mac: str
-    channel: int = Field(gt=0, lt=256)
-    latitude: float = Field(ge=-90, le=90)
-    longitude: float = Field(ge=-180, le=180)
-    accuracy: int = Field(ge=0)
+    channel: int
+    latitude: float
+    longitude: float
+    accuracy: int
     altitude: int
     altitude_accuracy: int
+
+    def validate(self) -> None:
+        """Validates the WifiInfo object."""
+        assert 0 <= self.channel <= 255, "Channel must be between 0 and 255."
+        assert -90 <= self.latitude <= 90, "Latitude must be between -90 and 90."
+        assert -180 <= self.longitude <= 180, "Longitude must be between -180 and 180."
+        assert self.accuracy >= 0, "Accuracy must be greater than or equal to 0."
+        assert self.altitude >= 0, "Altitude must be greater than or equal to 0."
+        assert self.altitude_accuracy >= 0, "Altitude accuracy must be greater than or equal to 0."
 
     @classmethod
     def from_response_wifi(cls, response_wifi: Response.ResponseWifi) -> "WifiInfo":
@@ -43,7 +52,8 @@ class WifiInfo(BaseModel):
                 altitude=response_wifi.location.altitude,
                 altitude_accuracy=response_wifi.location.altitudeAccuracy,
             )
-        except ValidationError as e:
+        except AssertionError as e:
+            # Fields are invalid if Apple doesn't know this wifi access point
             raise NoResultsError(response_wifi.mac) from e
 
     def to_feature(self) -> dict:
@@ -54,7 +64,7 @@ class WifiInfo(BaseModel):
                 "type": "Point",
                 "coordinates": [self.longitude, self.latitude],
             },
-            "properties": self.model_dump(),
+            "properties": asdict(self),
         }
 
 

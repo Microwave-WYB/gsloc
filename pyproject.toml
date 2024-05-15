@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gsloc"
-version = "0.1.1"
+version = "0.1.2"
 description = "A simple API for Apple's gs-loc service"
 authors = ["Yibo Wei <david_wyb2001@outlook.com>"]
 readme = "README.md"

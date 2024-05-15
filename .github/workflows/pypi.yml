@@ -4,6 +4,7 @@ on:
       - main
     paths:
       - pyproject.toml
+  workflow_dispatch:
 
 jobs:
   pypi-publish:

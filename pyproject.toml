@@ -1,9 +1,13 @@
 [tool.poetry]
 name = "gsloc"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "A simple API for Apple's gs-loc service"
 authors = ["Yibo Wei <david_wyb2001@outlook.com>"]
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/Microwave-WYB/gsloc"
+repository = "https://github.com/Microwave-WYB/gsloc"
+
 
 [tool.poetry.dependencies]
 python = "^3.9"

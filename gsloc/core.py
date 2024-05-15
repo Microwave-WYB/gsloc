@@ -3,6 +3,7 @@
 import logging
 import struct
 from dataclasses import asdict, dataclass
+from typing import List
 
 import requests
 
@@ -103,7 +104,7 @@ class Payload:
     """Payload for the request."""
 
     def __init__(
-        self, header: PayloadHeader, mac_addresses: list[str], noise: int = 0, signal: int = 100
+        self, header: PayloadHeader, mac_addresses: List[str], noise: int = 0, signal: int = 100
     ):
         self.header = header
         self.request = Request()
@@ -119,7 +120,7 @@ class Payload:
         return self.header.build() + size + message
 
 
-def query(macs: list[str]) -> list[WifiInfo]:
+def query(macs: List[str]) -> List[WifiInfo]:
     """Queries the Apple location service with the given payload."""
     logger.info("Querying Apple location service with MAC addresses: %s", macs)
     payload = Payload(PayloadHeader(), macs)
